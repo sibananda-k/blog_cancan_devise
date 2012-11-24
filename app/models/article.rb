@@ -7,6 +7,7 @@ class Article < ActiveRecord::Base
   attr_writer :tag_names
   after_save :assign_tags
   
+  attr_accessible :title, :body, :tag_names
   def tag_names
     @tag_names || tags.map(&:name).join(' ')
   end
