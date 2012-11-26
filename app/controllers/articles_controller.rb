@@ -2,12 +2,12 @@ class ArticlesController < ApplicationController
   before_filter:authenticate_user!
   # GET /articles
   # GET /articles.json
-  def index
-    @articles = Article.all
-
+ def index
+    @articles = Article.all(:include => :user)
+    
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @articles }
+      format.xml  { render :xml => @articles }
     end
   end
 
@@ -44,14 +44,15 @@ class ArticlesController < ApplicationController
   def create
     authorize! :create, @article
     @article = Article.new(params[:article])
-
+     @article.user_id = current_user.id
+    
     respond_to do |format|
       if @article.save
-        format.html { redirect_to @article, notice: 'Article was successfully created.' }
-        format.json { render json: @article, status: :created, location: @article }
+        format.html { redirect_to(@article, :notice => 'Article was successfully created.') }
+        format.xml  { render :xml => @article, :status => :created, :location => @article }
       else
-        format.html { render action: "new" }
-        format.json { render json: @article.errors, status: :unprocessable_entity }
+        format.html { render :action => "new" }
+        format.xml  { render :xml => @article.errors, :status => :unprocessable_entity }
       end
     end
   end

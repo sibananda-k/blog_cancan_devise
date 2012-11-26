@@ -9,7 +9,7 @@ BlogCancanDevise::Application.routes.draw do
   resources :articles do
     resources :comments
   end
-
+ resources :tags
   
 
   # The priority is based upon order of creation:

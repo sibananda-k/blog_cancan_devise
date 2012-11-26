@@ -12,6 +12,8 @@ class Article < ActiveRecord::Base
     @tag_names || tags.map(&:name).join(' ')
   end
   
+  belongs_to :user
+
   private
   
   def assign_tags
